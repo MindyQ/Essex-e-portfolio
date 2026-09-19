@@ -85,7 +85,7 @@ def file_to_md(typ, p):
 
 # Each unit -> ordered list of (type, path) from the ORIGINAL input files
 sources = {
-    2: [('docx', 'Unit2 task .docx'), ('docx', 'unit2 case study.docx')],
+    2: [('docx', 'unit2 case study.docx')],
     3: [('docx', 'Unit3 algorithm analysis.docx')],
     4: [('docx', 'Unit4 software development methodologies.docx')],
     5: [('docx', 'Unit5 case study.docx'),
