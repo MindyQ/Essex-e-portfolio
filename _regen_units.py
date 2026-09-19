@@ -1,4 +1,4 @@
-import zipfile, os
+import zipfile, os, re
 from xml.etree import ElementTree as ET
 
 W = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
@@ -83,6 +83,42 @@ def file_to_md(typ, p):
         return '```python\n' + s + '\n```'
     return ''
 
+HEADINGS = ['Scenario', 'Threat Analysis', 'Mitigation', 'Ethical Considerations']
+
+def fix_u8(md):
+    """Unit 8 source docx has every paragraph bolded. Keep section titles as
+    headings, drop bold from body paragraphs so the page is readable."""
+    out_lines = []
+    for line in md.split('\n'):
+        s = line.strip()
+        if not s:
+            out_lines.append(line)
+            continue
+        m = re.match(r'^\*\*(.+)\*\*$', s, re.S)
+        inner = (m.group(1) if m else s).replace('**', '')
+        if inner.startswith('Hypothetical Case Analysis'):
+            out_lines.append('## ' + inner)
+            continue
+        if inner in HEADINGS:
+            out_lines.append('### ' + inner)
+            continue
+        handled = False
+        for h in HEADINGS:
+            for variant in (h, h.replace(' ', '')):
+                idx = inner.rfind(variant)
+                if idx != -1 and idx + len(variant) == len(inner):
+                    body = inner[:idx].rstrip('. ').rstrip()
+                    out_lines.append(body)
+                    out_lines.append('### ' + h)
+                    handled = True
+                    break
+            if handled:
+                break
+        if handled:
+            continue
+        out_lines.append(inner)
+    return '\n'.join(out_lines)
+
 # Each unit -> ordered list of (type, path) from the ORIGINAL input files
 sources = {
     2: [('docx', 'unit2 case study.docx')],
@@ -113,6 +149,8 @@ for u, srcs in sources.items():
         parts.append(file_to_md(typ, p))
         parts.append('')
     out = '\n'.join(parts).strip('\n') + '\n'
+    if u == 8:
+        out = fix_u8(out)
     open(md_path, 'w', encoding='utf-8').write(out)
     print(f'unit{u}.md  chars={len(out)}  paras~={out.count(chr(10))+1}')
 print('DONE')
