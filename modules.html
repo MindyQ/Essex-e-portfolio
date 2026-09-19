@@ -193,6 +193,18 @@
             transition: background 0.25s ease, color 0.25s ease;
         }
         .task-link:hover { background: var(--coral); color: #fff; }
+
+        /* Module 1 头部栏（head bar）：比主珊瑚橙深一档的实色 banner，更高 */
+        .module-headbar {
+            background: #d9693c;          /* 深色一点点：比 --coral(#ff9f68) 深一档 */
+            color: #fff;
+        }
+        .module-headbar .module-headbar-badge {
+            background: rgba(255, 255, 255, 0.22) !important;
+            color: #fff;
+        }
+        .module-headbar h5 { color: #fff; }
+        .module-headbar .module-headbar-text { color: rgba(255, 255, 255, 0.92) !important; }
 </style>
 </head>
 <body>
@@ -292,19 +304,19 @@
 
                 <!-- ========== 模块 1 ========== -->
                 <section id="module1" class="module-block mb-5 reveal">
-                    <!-- 模块卡片（图 + 标题 + 简介）：紧凑型，高度约为原版一半 -->
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3">
+                    <!-- 模块卡片（图 + 标题 + 简介）：head bar 风格，深色 banner + 更高 -->
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3 module-headbar">
                         <div class="row g-0 align-items-center">
                             <!-- 左：模块配图。改用图片库中居中构图的 AI/芯片主题图（images/icons (3).png），90px 小图裁剪后主体仍清晰 -->
                             <div class="col-md-4">
                                 <img src="images/icons%20(3).png" alt="Launch into Computing" class="img-fluid w-100" style="object-fit: cover; min-height: 90px; max-height: 90px;">
                             </div>
-                            <!-- 右：模块标题与简介，内边距收紧、字号略小 -->
+                            <!-- 右：模块标题与简介，内边距加高、字号略小 -->
                             <div class="col-md-8">
-                                <div class="card-body p-3">
-                                    <span class="badge rounded-pill text-white mb-1" style="background: var(--coral);">Module 1</span>
+                                <div class="card-body px-3 py-4">
+                                    <span class="badge rounded-pill mb-1 module-headbar-badge">Module 1</span>
                                     <h5 class="fw-bold mb-1">Launch into Computing</h5>
-                                    <p class="text-secondary mb-0" style="font-size: .85rem;">
+                                    <p class="mb-0 module-headbar-text" style="font-size: .85rem;">
                                         Foundations of computing and AI: programming logic, algorithmic thinking,
                                         and the architecture behind modern software systems.
                                     </p>
