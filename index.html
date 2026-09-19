@@ -316,7 +316,13 @@
             text-align: center;
             color: var(--soft-gray);
             font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
             animation: bounceDown 2s ease-in-out infinite;
+        }
+
+        .scroll-hint:hover {
+            color: var(--coral);
         }
 
         .scroll-hint i {
@@ -1074,11 +1080,11 @@
             </div>
         </div>
 
-        <!-- 滚动提示 -->
-        <div class="scroll-hint">
+        <!-- 滚动提示（点击平滑滚动到 Modules 区） -->
+        <a href="#modules" class="scroll-hint">
             Scroll to discover
             <i class="fas fa-chevron-down"></i>
-        </div>
+        </a>
     </section>
 
     <!-- ========================================
