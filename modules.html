@@ -114,6 +114,17 @@
 
         /* 左侧模块导航：吸顶（Bootstrap position-sticky + 原生 top 偏移） */
         .module-sidebar { position: sticky; top: 96px; }
+        /* 模块导航列表缩略图：搭配图标，填充原本空白的左侧栏 */
+        .module-sidebar .mod-thumb {
+            width: 46px;
+            height: 46px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+        .module-sidebar .mod-name { line-height: 1.2; }
+        .module-sidebar .mod-sub { font-size: .78rem; }
 
         /* 右侧模块区块：默认隐藏；点击左侧模块锚点后通过 :target 显示（纯 CSS 手风琴，无 JS） */
         .module-block {
@@ -271,17 +282,29 @@
                     <h5 class="fw-bold mb-3"><i class="fas fa-layer-group me-2" style="color: var(--coral);"></i>Modules</h5>
                     <!-- Bootstrap 列表组：每项为一个模块锚点 -->
                     <div class="list-group shadow-sm rounded-4 overflow-hidden">
-                        <a href="#module1" class="list-group-item list-group-item-action d-flex align-items-center">
-                            <span class="badge rounded-pill me-2 text-white" style="background: var(--coral);">1</span>
-                            Launch into Computing
+                        <a href="#module1" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                            <img src="images/icons%20(3).png" alt="Launch into Computing" class="mod-thumb me-3">
+                            <span class="badge rounded-pill me-2 text-white flex-shrink-0" style="background: var(--coral);">1</span>
+                            <span class="mod-name">
+                                <span class="fw-semibold d-block">Launch into Computing</span>
+                                <small class="text-secondary mod-sub">Foundations of computing and AI</small>
+                            </span>
                         </a>
-                        <a href="#module2" class="list-group-item list-group-item-action d-flex align-items-center">
-                            <span class="badge rounded-pill me-2 text-white" style="background: var(--lavender);">2</span>
-                            Understanding Artificial Intelligence
+                        <a href="#module2" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                            <img src="images/icons%20(2).png" alt="Understanding Artificial Intelligence" class="mod-thumb me-3">
+                            <span class="badge rounded-pill me-2 text-white flex-shrink-0" style="background: var(--lavender);">2</span>
+                            <span class="mod-name">
+                                <span class="fw-semibold d-block">Understanding Artificial Intelligence</span>
+                                <small class="text-secondary mod-sub">Core concepts of AI, ML &amp; neural networks</small>
+                            </span>
                         </a>
-                        <a href="#module3" class="list-group-item list-group-item-action d-flex align-items-center">
-                            <span class="badge rounded-pill me-2 text-white" style="background: var(--mint);">3</span>
-                            Numerical Analysis
+                        <a href="#module3" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                            <img src="images/icons%20(1).png" alt="Numerical Analysis" class="mod-thumb me-3">
+                            <span class="badge rounded-pill me-2 text-white flex-shrink-0" style="background: var(--mint);">3</span>
+                            <span class="mod-name">
+                                <span class="fw-semibold d-block">Numerical Analysis</span>
+                                <small class="text-secondary mod-sub">The mathematical engine behind AI</small>
+                            </span>
                         </a>
                     </div>
 
