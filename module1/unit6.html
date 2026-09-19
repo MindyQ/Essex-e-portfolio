@@ -81,25 +81,16 @@
         <div class="unit-body">
             <a class="back-link" href="../modules.html">&larr; Back to Modules Guide</a>
 <h1>Unit 6 · Principles of Artificial Intelligence (AI) I</h1>
-<blockquote>A binary classification model for breast-cancer screening, built with Scikit-learn.</blockquote>
-<h2>What the model does</h2>
-<p>The AI model uses Python and the Scikit-learn library to perform <strong>binary classification</strong> on the public UCI Breast Cancer Wisconsin Dataset. Its core task is to predict automatically whether a tumour is <strong>benign or malignant</strong>, based on numerical medical features extracted from cell images.</p>
-<p>This supports medical screening in three ways: fast, consistent classification; assistance with preliminary diagnosis; and a reduced manual workload for clinical staff.</p>
-<h2>How performance is measured</h2>
-<p>The model is evaluated with three standard metrics on an 80-20 train/test split:</p>
-<ul>
-<li><strong>Accuracy</strong> — most test samples get the correct prediction.</li>
-<li><strong>Precision</strong> — the model rarely labels a benign tumour as malignant, avoiding needless anxiety.</li>
-<li><strong>Recall</strong> — the model catches most real malignant cases, so dangerous tumours are detected reliably.</li>
-</ul>
-<h2>Limitations & ethical concern</h2>
-<p>The model learns only from fixed historical data, so it cannot adapt to rare tumour types or new patient cases outside the dataset distribution. It also lacks the interpretability clinical diagnosis requires and must not replace professional medical judgement.</p>
-<p>The key ethical risk is <strong>demographic bias</strong>: the dataset covers only specific regions, so the model may perform poorly for patients of different ages, ethnicities, or regions. Over-reliance could cause diagnostic errors and health risks. The model should serve only as an auxiliary reference, never as an authoritative conclusion.</p>
-<h2>Code (<code>Unit6 AI model.py</code>)</h2>
+<p>The artificial intelligence model uses Python and the Scikit-learn library.It performs binary classification on the publicly available UCI Breast Cancer Wisconsin Dataset. The core task is to predict automatically whether a breast tumour is benign or malignant. These predictions rely on numerical medical features extracted from cell images.</p>
+<p>This machine learning solution supports medical screening in three ways. It gives fast and consistent classification results. Moreover, it helps doctors with preliminary tumour diagnosis. Besides, it reduces the manual analysis workload for clinical staff.</p>
+<p>The model performance is measured with three standard metrics: accuracy, precision, and recall. After training and testing on an 80-20 data split, it reaches high overall performance. The high accuracy shows that most test samples receive correct predictions. The high precision means the model rarely labels a benign tumour as malignant, which avoids needless medical anxiety. Meanwhile, the high recall shows that the model catches most real malignant cases, so dangerous tumours are detected reliably.</p>
+<p>However, there are still clear limitations. The model learns only from fixed historical medical data. It cannot adapt to rare tumour types or new patient cases that fall outside the dataset distribution. In addition, it cannot replace professional medical judgement. It also lacks the interpretability that clinical diagnosis requires.</p>
+<p>The ethical concern is demographic bias. The dataset contains patient samples from specific regions only. The model may perform poorly on patients of different ages, ethnicities, or regions. Over-reliance on this tool could cause diagnostic errors and create health risks.</p>
+<p>Therefore, the model should serve only as an auxiliary reference. It must not be treated as an authoritative medical conclusion.</p>
 <pre><code>import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, classification_report
+from sklearn.metrics import accuracy_score,precision_score, recall_score, classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import load_breast_cancer
@@ -110,7 +101,7 @@ df["target"] = cancer_data.target
 df.to_csv("breast_cancer.csv", index=False)
 
 df = pd.read_csv("breast_cancer.csv")
-X = df.drop("target", axis=1)
+X = df.drop("target",axis=1)
 y = df["target"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
