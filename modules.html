@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules Guide | Mingxia Qin — University of Essex M.Sc. AI</title>
+
+    <!-- Bootstrap 5.3.3 CSS（主力布局与组件样式，尽量复用其工具类） -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6.5.1 图标库（单元/模块图标） -->
+    <link rel="stylesheet" href="vendor/font-awesome/css/all.min.css">
+
+    <!-- Google Fonts（与首页保持一致的无衬线字体） -->
+    <link href="vendor/fonts/google-fonts.css" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           复用自 index.html 的设计变量与基础样式（保持头部/页脚一致）
+           ============================================================ */
+        :root {
+            --coral: #ff9f68;        /* 主色：暖橙珊瑚 */
+            --lavender: #9b8bf4;   /* 辅助色：薰衣草紫 */
+            --sunshine: #ffd166;   /* 点缀：阳光黄 */
+            --mint: #06d6a0;       /* 点缀：薄荷绿 */
+            --blossom: #ff9fb7;   /* 点缀：樱花粉 */
+            --cream: #fff9f5;      /* 背景：暖米白 */
+            --ink: #2d3436;        /* 主文字：深灰 */
+            --soft-gray: #636e72;  /* 次文字 */
+        }
+
+        /* 全局基础：盒模型、平滑滚动、字体（保留必要的原生规则） */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }   /* 锚点跳转平滑滚动（纯 CSS） */
+        body {
+            font-family: 'Poppins', 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ===================== NAVBAR 导航栏（复用首页） ===================== */
+        .navbar {
+            background: rgba(224, 118, 56, 0.72) !important;   /* 暖橙半透明玻璃条，铺满整页宽度但上下收窄变矮 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 18px rgba(224, 118, 56, 0.25);
+            padding: 0.5rem 0;
+            transition: all 0.4s ease;
+        }
+        .navbar-brand { font-weight: 700; font-size: 1.5rem; color: #ffffff !important; letter-spacing: -0.5px; }
+        .nav-link {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.82) !important;   /* 深底上浅色文字 */
+            margin: 0 0.5rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active { color: #ffffff !important; }
+        .nav-link::after {   /* 悬停下划线动画（纯 CSS） */
+            content: ''; position: absolute; bottom: -2px; left: 0;
+            width: 0; height: 3px; border-radius: 2px;
+            background: linear-gradient(90deg, #ffffff, #ffe0a3);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .navbar-toggler { border-color: rgba(255, 255, 255, 0.4) !important; }
+        .navbar-toggler:focus { box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25); }
+        .navbar-toggler-icon { filter: invert(1); }
+
+        /* ===================== FOOTER 页脚（复用首页） ===================== */
+        .footer-section {
+            background: var(--ink); color: white;
+            padding: 60px 0 30px; position: relative; overflow: hidden;
+        }
+        .footer-section::before {   /* 顶部流动彩色条（纯 CSS 动画） */
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--coral), var(--lavender), var(--sunshine), var(--mint));
+            background-size: 300% 300%;
+            animation: gradientShift 5s ease infinite;
+        }
+        .footer-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-text { color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; }
+        /* 页脚联系方式：图标左、虚拟信息右（复用首页） */
+        .footer-contacts { display: flex; flex-direction: column; gap: 0.9rem; align-items: flex-end; }
+        .footer-contact-item {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            color: rgba(255, 255, 255, 0.82); text-decoration: none; font-size: 0.98rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .footer-contact-item i { color: var(--coral); font-size: 1.15rem; width: 20px; text-align: center; }
+        .footer-contact-item:hover { color: #ffffff; transform: translateX(4px); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 2rem;
+            padding-top: 1.5rem; text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.85rem;
+        }
+
+        /* ============================================================
+           以下为【模块列表页】专用样式：尽量用 Bootstrap，仅保留少量必要原生 CSS
+           ============================================================ */
+
+        /* 页头标题区：渐变 + 纸张噪点纹理（纯 CSS，复用首页肌理风格） */
+        .modules-hero {
+            background-color: var(--cream);
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, #fff9f5 0%, #fff0e8 50%, #f5eeff 100%);
+            background-size: 200px 200px, 100% 100%;
+            padding: 70px 0 60px;
+        }
+        /* 页头右侧插画：缓慢浮动（纯 CSS 动画） */
+        .hero-float-img { animation: floatShape 6s ease-in-out infinite; }
+
+        /* 左侧模块导航：吸顶（Bootstrap position-sticky + 原生 top 偏移） */
+        .module-sidebar { position: sticky; top: 96px; }
+
+        /* 右侧模块区块：默认隐藏；点击左侧模块锚点后通过 :target 显示（纯 CSS 手风琴，无 JS） */
+        .module-block {
+            display: none;
+            scroll-margin-top: 96px;   /* 锚点跳转时避开固定导航栏 */
+        }
+        .module-block:target {
+            display: block;
+            animation: fadeInUp 0.6s ease both;   /* 展开时淡入上浮 */
+        }
+
+        /* 未选择模块时的占位提示；当右栏内任意模块被 :target 时隐藏 */
+        .modules-placeholder { display: block; }
+        .modules-stage:has(.module-block:target) .modules-placeholder { display: none; }
+
+        /* 默认（未点击任何模块）即直接展示模块 1 的 Unit 1–12 内容（纯 CSS，无 JS）：
+           - 用 :not(:has(:target)) 判断当前没有模块被锚点选中
+           - 此时显示 #module1，并隐藏占位提示卡 */
+        .modules-stage:not(:has(.module-block:target)) #module1 { display: block; }
+        .modules-stage:not(:has(.module-block:target)) .modules-placeholder { display: none; }
+
+        /* 单元卡片：悬停抬升（纯 CSS transition，Bootstrap 无此工具类） */
+        .unit-card {
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .unit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 42px rgba(45, 52, 54, 0.14) !important;
+        }
+
+        /* 单元图标：圆形底（颜色用内联 style 覆盖，循环主题色） */
+        .unit-icon {
+            width: 50px; height: 50px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; color: #fff; flex-shrink: 0;
+        }
+
+        /* 单元标题：长标题自动换行且不溢出的微调 */
+        .unit-title {
+            font-size: 0.98rem;
+            line-height: 1.3;
+            margin-bottom: 0.35rem;
+        }
+
+        /* 区块淡入上浮（纯 CSS 关键帧，进入即播放一次） */
+        .reveal { animation: fadeInUp 0.8s ease both; }
+
+        /* 关键帧：流动渐变 / 浮动 / 淡入（复用 + 本页新增，全部纯 CSS） */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-22px) scale(1.04); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 小屏适配：左侧导航不再吸顶，模块图缩小 */
+        @media (max-width: 991.98px) {
+            .module-sidebar { position: static; margin-bottom: 2rem; }
+            .hero-float-img { width: 240px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         NAVIGATION BAR 顶部导航栏（复用首页结构；链接微调：
+         Home/About/Journey 指回 index.html，Modules 指向本页）
+         ============================================================ -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- 品牌 Logo -->
+            <a class="navbar-brand" href="index.html">Mingxia Qin</a>
+            <!-- 移动端折叠按钮（Bootstrap data 属性控制，无需 JS 逻辑） -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 导航链接 -->
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#module1">Modules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#journey">Journey</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         页头标题区：左文右图（Bootstrap 栅格）
+         ============================================================ -->
+    <header class="modules-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- 左列：标题与说明 -->
+                <div class="col-lg-7">
+                    <span class="badge rounded-pill text-bg-dark mb-3 px-3 py-2">University of Essex · M.Sc. Artificial Intelligence</span>
+                    <h1 class="display-4 fw-bold mb-3">Modules Guide</h1>
+                    <p class="lead text-secondary mb-4">
+                        A structured map of my AI programme — three core modules on the left,
+                        each broken down into its Units (1–12) with brief introductions on the right.
+                    </p>
+                    <a href="#module1" class="btn btn-lg rounded-pill px-4 text-white" style="background: var(--coral);">
+                        Explore Modules <i class="fas fa-arrow-down ms-1"></i>
+                    </a>
+                </div>
+                <!-- 右列：AI 主题插画（AI bot.png） -->
+                <div class="col-lg-5 text-center">
+                    <img src="images/AI%20image%20(2).png" alt="AI bot illustration" class="img-fluid hero-float-img" style="max-width: 320px;">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         主体：左模块导航 + 右单元列表（Bootstrap 两栏栅格）
+         ============================================================ -->
+    <main id="modules" class="container py-5">
+        <div class="row g-4">
+
+            <!-- ---------- 左栏：模块导航（吸顶），点击锚点跳转右侧 ---------- -->
+            <aside class="col-lg-4">
+                <div class="module-sidebar">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-layer-group me-2" style="color: var(--coral);"></i>Modules</h5>
+                    <!-- Bootstrap 列表组：每项为一个模块锚点 -->
+                    <div class="list-group shadow-sm rounded-4 overflow-hidden">
+                        <a href="#module1" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge rounded-pill me-2 text-white" style="background: var(--coral);">1</span>
+                            Launch into Computing
+                        </a>
+                        <a href="#module2" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge rounded-pill me-2 text-white" style="background: var(--lavender);">2</span>
+                            Understanding Artificial Intelligence
+                        </a>
+                        <a href="#module3" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge rounded-pill me-2 text-white" style="background: var(--mint);">3</span>
+                            Numerical Analysis
+                        </a>
+                    </div>
+
+                </div>
+            </aside>
+
+            <!-- ---------- 右栏：模块区块 + 单元列表（默认折叠，点击左侧模块名后 :target 展开） ---------- -->
+            <div class="col-lg-8 modules-stage">
+
+                <!-- 未选择模块时的占位提示：任意模块被 :target 后自动隐藏（纯 CSS） -->
+                <div class="modules-placeholder card border-0 shadow-sm rounded-4 p-5 text-center reveal">
+                    <div class="mb-3">
+                        <i class="fas fa-hand-pointer fa-3x" style="color: var(--coral);"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Select a Module</h3>
+                    <p class="text-secondary mb-0">
+                        Click a module name on the left to view its Units 1–12.
+                    </p>
+                </div>
+
+                <!-- ========== 模块 1 ========== -->
+                <section id="module1" class="module-block mb-5 reveal">
+                    <!-- 模块卡片（图 + 标题 + 简介）：紧凑型，高度约为原版一半 -->
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3">
+                        <div class="row g-0 align-items-center">
+                            <!-- 左：模块配图。改用图片库中居中构图的 AI/芯片主题图（images/icons (3).png），90px 小图裁剪后主体仍清晰 -->
+                            <div class="col-md-4">
+                                <img src="images/icons%20(3).png" alt="Launch into Computing" class="img-fluid w-100" style="object-fit: cover; min-height: 90px; max-height: 90px;">
+                            </div>
+                            <!-- 右：模块标题与简介，内边距收紧、字号略小 -->
+                            <div class="col-md-8">
+                                <div class="card-body p-3">
+                                    <span class="badge rounded-pill text-white mb-1" style="background: var(--coral);">Module 1</span>
+                                    <h5 class="fw-bold mb-1">Launch into Computing</h5>
+                                    <p class="text-secondary mb-0" style="font-size: .85rem;">
+                                        Foundations of computing and AI: programming logic, algorithmic thinking,
+                                        and the architecture behind modern software systems.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mb-3"><i class="fas fa-list-ul me-2" style="color: var(--coral);"></i>Units 1–12</h4>
+                    <!-- 单元网格：Bootstrap 响应式栅格（每卡含图标 + 单元徽标 + 官方单元标题 + 一句简介） -->
+                    <div class="row g-3">
+                        <!-- Unit 1 What is Computing? -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-desktop"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--lavender); font-size:.7rem;">Unit 1</span></div>
+                            <h6 class="fw-bold unit-title">What is Computing?</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Defining computation, computers and the kinds of problems they solve.</p>
+                        </div></div>
+                        <!-- Unit 2 Logical Foundations of Computing -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-microchip"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--coral); font-size:.7rem;">Unit 2</span></div>
+                            <h6 class="fw-bold unit-title">Logical Foundations of Computing: Boolean Algebra, Gates, and Set Theory</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Logic gates, Boolean algebra and sets that build digital circuits.</p>
+                        </div></div>
+                        <!-- Unit 3 Principles of Computer Science -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--sunshine);"><i class="fas fa-book-open"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--sunshine); font-size:.7rem;">Unit 3</span></div>
+                            <h6 class="fw-bold unit-title">Principles of Computer Science</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Core ideas: algorithms, data and how computers process information.</p>
+                        </div></div>
+                        <!-- Unit 4 Software Engineering -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-laptop-code"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--mint); font-size:.7rem;">Unit 4</span></div>
+                            <h6 class="fw-bold unit-title">Software Engineering</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Planning, building and maintaining reliable software systems.</p>
+                        </div></div>
+                        <!-- Unit 5 Data Science and Storage -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--blossom);"><i class="fas fa-database"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--blossom); font-size:.7rem;">Unit 5</span></div>
+                            <h6 class="fw-bold unit-title">Data Science and Storage</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Storing, organising and extracting insight from data at scale.</p>
+                        </div></div>
+                        <!-- Unit 6 Principles of AI I -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-brain"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--lavender); font-size:.7rem;">Unit 6</span></div>
+                            <h6 class="fw-bold unit-title">Principles of Artificial Intelligence (AI) I</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">First look at AI: agents, search and knowledge representation.</p>
+                        </div></div>
+                        <!-- Unit 7 Principles of AI II -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-robot"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--coral); font-size:.7rem;">Unit 7</span></div>
+                            <h6 class="fw-bold unit-title">Principles of Artificial Intelligence (AI) II</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Going deeper into learning systems and intelligent behaviour.</p>
+                        </div></div>
+                        <!-- Unit 8 Principles of Cyber Security -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--sunshine);"><i class="fas fa-shield-halved"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--sunshine); font-size:.7rem;">Unit 8</span></div>
+                            <h6 class="fw-bold unit-title">Principles of Cyber Security</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Protecting systems, data and users from digital threats.</p>
+                        </div></div>
+                        <!-- Unit 9 Computing and Risk -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-triangle-exclamation"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--mint); font-size:.7rem;">Unit 9</span></div>
+                            <h6 class="fw-bold unit-title">Computing and Risk</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Identifying and managing risk across computing projects.</p>
+                        </div></div>
+                        <!-- Unit 10 Strategic and Enterprise IT Management -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--blossom);"><i class="fas fa-briefcase"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--blossom); font-size:.7rem;">Unit 10</span></div>
+                            <h6 class="fw-bold unit-title">Strategic and Enterprise IT Management: Aligning IT with Business Goals</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Aligning IT strategy with wider business objectives.</p>
+                        </div></div>
+                        <!-- Unit 11 Future-Proofing IT Systems -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-landmark"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--lavender); font-size:.7rem;">Unit 11</span></div>
+                            <h6 class="fw-bold unit-title">Future-Proofing IT Systems: Integrating Risk Management and Strategic IT Governance</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Governance and resilience for long-lived IT systems.</p>
+                        </div></div>
+                        <!-- Unit 12 Future Trends and Concepts in Computing -->
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-rocket"></i></div>
+                                <span class="badge rounded-pill text-white" style="background: var(--coral); font-size:.7rem;">Unit 12</span></div>
+                            <h6 class="fw-bold unit-title">Future Trends and Concepts in Computing</h6>
+                            <p class="mb-0 text-secondary" style="font-size:.85rem;">Emerging technologies shaping the next decade of computing.</p>
+                        </div></div>
+                    </div>
+                </section>
+
+                <!-- ========== 模块 2 ========== -->
+                <section id="module2" class="module-block mb-5 reveal">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-5">
+                                <img src="images/icons%20(2).png" alt="Understanding Artificial Intelligence" class="img-fluid w-100" style="object-fit: cover; min-height: 180px;">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body p-4">
+                                    <span class="badge rounded-pill text-white mb-2" style="background: var(--lavender);">Module 2</span>
+                                    <h3 class="fw-bold mb-2">Understanding Artificial Intelligence</h3>
+                                    <p class="text-secondary mb-0" style="font-size: .95rem;">
+                                        Core concepts of AI — from machine learning foundations to neural networks
+                                        and the ethical questions they raise.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mb-3"><i class="fas fa-list-ul me-2" style="color: var(--lavender);"></i>Units 1–12</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-brain"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 1</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">What is AI: definition, history and major branches.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-cogs"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 2</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Machine learning: supervised vs unsupervised concepts.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-network-wired"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 3</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Neural networks: perceptrons and multi-layer networks.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--sunshine);"><i class="fas fa-atom"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 4</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Deep learning: CNNs and RNNs explained simply.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--blossom);"><i class="fas fa-language"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 5</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Natural language processing: text and language models.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-eye"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 6</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Computer vision: image recognition fundamentals.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-book-open"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 7</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Knowledge representation: symbols and reasoning.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-route"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 8</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Search &amp; planning: search algorithms in AI.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--sunshine);"><i class="fas fa-balance-scale"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 9</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">AI ethics: bias, fairness and accountability.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--blossom);"><i class="fas fa-shield-halved"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 10</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Responsible AI: safety and governance.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-globe"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 11</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">AI in society: education, health and daily life.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-flask"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 12</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Mini project: build a simple AI demo.</p>
+                        </div></div>
+                    </div>
+                </section>
+
+                <!-- ========== 模块 3 ========== -->
+                <section id="module3" class="module-block mb-5 reveal">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-5">
+                                <img src="images/icons%20(1).png" alt="Numerical Analysis" class="img-fluid w-100" style="object-fit: cover; min-height: 180px;">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body p-4">
+                                    <span class="badge rounded-pill text-white mb-2" style="background: var(--mint);">Module 3</span>
+                                    <h3 class="fw-bold mb-2">Numerical Analysis</h3>
+                                    <p class="text-secondary mb-0" style="font-size: .95rem;">
+                                        The mathematical engine behind AI — error analysis, linear systems,
+                                        and numerical methods that power modern models.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mb-3"><i class="fas fa-list-ul me-2" style="color: var(--mint);"></i>Units 1–12</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-calculator"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 1</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Numbers &amp; precision: floating point, error and stability.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-table"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 2</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Linear equations: Gaussian elimination and LU.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-chart-line"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 3</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Interpolation: Lagrange and splines.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--sunshine);"><i class="fas fa-divide"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 4</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Numerical differentiation: differences and accuracy.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--blossom);"><i class="fas fa-integral"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 5</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Numerical integration: trapezoidal and Simpson.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-square-root-alt"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 6</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Root finding: bisection and Newton's method.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-cube"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 7</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Eigenvalues: power iteration and QR.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--lavender);"><i class="fas fa-arrow-trend-down"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 8</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Optimization: gradient descent basics.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--sunshine);"><i class="fas fa-diagram-project"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 9</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">ODE solvers: Euler and Runge–Kutta.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--blossom);"><i class="fas fa-wave-square"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 10</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Curve fitting: least squares method.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--mint);"><i class="fas fa-dice"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 11</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Monte Carlo: random methods and simulation.</p>
+                        </div></div>
+                        <div class="col-md-6 reveal"><div class="unit-card card h-100 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center mb-2"><div class="unit-icon me-3" style="background: var(--coral);"><i class="fas fa-microscope"></i></div>
+                                <div><h6 class="mb-0 fw-bold">Unit 12</h6></div></div>
+                            <p class="mb-0 text-secondary" style="font-size:.9rem;">Case study: numerical methods in AI.</p>
+                        </div></div>
+                    </div>
+                </section>
+
+            </div><!-- /col-lg-8 右栏 -->
+        </div><!-- /row -->
+    </main>
+
+    <!-- ============================================================
+         FOOTER 页脚（复用首页结构：图标左、虚拟信息右）
+         ============================================================ -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h3 class="footer-title">Let's Connect</h3>
+                    <p class="footer-text">
+                        I'm currently open to remote opportunities in AI education, EdTech content development,
+                        and bilingual learning design. Let's build something meaningful together.
+                    </p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <!-- 页脚两个社交图标：图标在左，虚拟信息在右（示例占位） -->
+                    <div class="footer-contacts">
+                        <a href="mailto:your.name@example.com" class="footer-contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>your.name@example.com</span>
+                        </a>
+                        <a href="#" class="footer-contact-item">
+                            <i class="fab fa-linkedin-in"></i>
+                            <span>linkedin.com/in/yourname</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mingxia Qin. E-Portfolio for University of Essex M.Sc. Artificial Intelligence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3.3 JS Bundle：仅用于导航栏折叠，所有视觉动效均为纯 CSS -->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

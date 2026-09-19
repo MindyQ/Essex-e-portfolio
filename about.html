@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Mingxia Qin — AI Educator Portfolio</title>
+
+    <!-- Bootstrap 5.3.3 CSS（布局/间距/排版尽量全部交给 Bootstrap 工具类） -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6.5.1 图标（卡片图标、导航、页脚均使用） -->
+    <link rel="stylesheet" href="vendor/font-awesome/css/all.min.css">
+
+    <!-- Google Fonts：Poppins（标题）+ Quicksand（正文），与 index 一致 -->
+    <link href="vendor/fonts/google-fonts.css" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           DESIGN TOKENS 设计变量（About 页独立配色）
+           思路：暖珊瑚橙（呼应复用导航栏）+ 紫 + 薄荷 + 深茄紫文字，
+           属 2024–2026 流行的「暖色编辑风 / 柔和渐变」组合。
+           ============================================================ */
+        :root {
+            --cream:   #fdf6ef;   /* 背景：暖米白 */
+            --mint-bg: #eaf4f1;   /* 浅薄荷底（区块交替用） */
+            --ink:     #33263f;   /* 主文字 / 深色底：深茄紫 */
+            --ink-soft:#7d7488;   /* 次要文字：灰紫 */
+            --coral:   #ff6b4a;   /* 主强调色：暖珊瑚橙（与导航栏呼应） */
+            --coral-d: #f2532f;
+            --violet:  #7b6cf6;   /* 辅助色：柔紫 */
+            --teal:    #16b8a6;   /* 辅助色：薄荷绿 */
+            --gold:    #f6b24b;   /* 点缀：暖金 */
+            --surface: #ffffff;
+            --shadow-soft: 0 10px 40px rgba(123, 108, 246, 0.12);
+            --shadow-lift: 0 18px 50px rgba(51, 38, 63, 0.14);
+        }
+
+        /* 全局基础（仅做 reset 与字体，不做布局） */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ============================================================
+           NAVBAR 顶部导航栏 —— 直接复用 index.html 的样式与结构
+           ============================================================ */
+        .navbar {
+            background: rgba(224, 118, 56, 0.72) !important;   /* 暖橙半透明玻璃条，铺满宽度、上下收窄 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 18px rgba(224, 118, 56, 0.25);
+            padding: 0.5rem 0;
+            transition: all 0.4s ease;
+        }
+        .navbar-brand {
+            font-weight: 700; font-size: 1.5rem;
+            color: #ffffff !important; letter-spacing: -0.5px;
+        }
+        .navbar-brand .brand-dot {
+            color: var(--coral);
+            display: inline-block;
+            animation: bounceDot 1.5s ease-in-out infinite;   /* 圆点上下跳动 */
+        }
+        .nav-link {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.82) !important;
+            margin: 0 0.5rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active { color: #ffffff !important; }
+        .nav-link::after {                     /* 悬停下划线展开动画 */
+            content: ''; position: absolute; bottom: -2px; left: 0;
+            width: 0; height: 3px;
+            background: linear-gradient(90deg, #ffffff, #ffe0a3);
+            border-radius: 2px; transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .navbar-toggler { border-color: rgba(255, 255, 255, 0.4) !important; }
+        .navbar-toggler:focus { box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25); }
+        .navbar-toggler-icon { filter: invert(1); }
+
+        /* ============================================================
+           ABOUT HERO 首屏（个人介绍）
+           纯 CSS 渐变背景 + 噪点纹理 + 浮动装饰 + 入场动画
+           ============================================================ */
+        .about-hero {
+            min-height: 92vh;
+            display: flex; align-items: center;
+            position: relative;
+            padding: 150px 0 90px;           /* 顶部留出固定导航栏高度 */
+            /* 背景：噪点纸纹 + 暖色流动渐变（两层叠加，纯 CSS） */
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, #fdf6ef 0%, #fdeee2 45%, #eef3f7 100%);
+            background-size: 200px 200px, 300% 300%;
+            animation: gradientShift 14s ease infinite;   /* 渐变缓慢流动 */
+            overflow: hidden;
+        }
+        /* 浮动装饰圆（纯 CSS，hover 无关，持续漂浮） */
+        .float-shape {
+            position: absolute; border-radius: 50%;
+            opacity: 0.16; filter: blur(2px);
+            animation: floatShape 9s ease-in-out infinite;
+        }
+        .fs-1 { width: 300px; height: 300px; background: var(--coral);  top: 8%;  left: -6%; }
+        .fs-2 { width: 200px; height: 200px; background: var(--violet); top: 55%; right: 4%; animation-delay: 2s; }
+        .fs-3 { width: 130px; height: 130px; background: var(--teal);   bottom: 12%; left: 22%; animation-delay: 4s; }
+
+        /* Hero 小药丸徽标 */
+        .about-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 1.2rem;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50px;
+            font-size: 0.92rem; color: var(--ink-soft);
+            box-shadow: 0 4px 15px rgba(123, 108, 246, 0.12);
+            margin-bottom: 1.4rem;
+            animation: fadeInDown 1s ease-out;
+        }
+        .about-badge i { color: var(--coral); animation: pulseIcon 2s ease-in-out infinite; }
+
+        /* Hero 大标题与高亮 */
+        .about-title {
+            font-size: 3.1rem; font-weight: 700; line-height: 1.15;
+            margin-bottom: 1.3rem; color: var(--ink);
+            animation: fadeInUp 1s ease-out 0.15s both;
+        }
+        .about-title .hl {
+            background: linear-gradient(120deg, var(--coral), var(--violet));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .about-sub {
+            font-size: 1.15rem; color: var(--ink-soft);
+            max-width: 540px; margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.35s both;
+        }
+        .about-cta {
+            display: inline-flex; align-items: center; gap: 0.7rem;
+            padding: 0.9rem 2rem;
+            background: linear-gradient(135deg, var(--coral), var(--coral-d));
+            color: #fff; border-radius: 50px; font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(255, 107, 74, 0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease-out 0.55s both;
+        }
+        .about-cta:hover { transform: translateY(-4px); color: #fff; box-shadow: 0 12px 35px rgba(255, 107, 74, 0.45); }
+        .about-cta i { transition: transform 0.3s ease; }
+        .about-cta:hover i { transform: translateX(5px); }
+
+        /* Hero 个人形象照：圆形 + 旋转光环 + 入场缩放 */
+        .about-photo-wrap {
+            position: relative; display: flex; justify-content: center; align-items: center;
+            animation: fadeInScale 1.2s ease-out 0.4s both;
+        }
+        .about-photo-ring {
+            position: absolute; width: 420px; height: 420px; border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--coral), var(--violet), var(--teal), var(--gold), var(--coral));
+            animation: rotateRing 16s linear infinite;   /* 光环持续旋转 */
+            filter: blur(8px); opacity: 0.4;
+        }
+        .about-photo {
+            width: 360px; height: 360px; object-fit: cover; border-radius: 50%;
+            border: 8px solid #fff; box-shadow: var(--shadow-lift);
+            position: relative; z-index: 2;
+            transition: transform 0.5s ease;
+        }
+        .about-photo:hover { transform: scale(1.03) rotate(2deg); }
+
+        /* ============================================================
+           SECTION 通用容器间距（尽量用 Bootstrap section-padding 概念）
+           ============================================================ */
+        .section-pad { padding: 96px 0; }
+        .section-tag {
+            display: inline-block; padding: 0.4rem 1rem;
+            background: rgba(255, 107, 74, 0.12); color: var(--coral);
+            border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 0.5px; margin-bottom: 1rem;
+        }
+        .section-title { font-size: 2.3rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
+        .section-lead { color: var(--ink-soft); font-size: 1.05rem; max-width: 720px; }
+
+        /* ============================================================
+           PROFESSIONAL 专业总结卡（Who I Am 与 Career 之间的过渡段）
+           用 Bootstrap card 外观 + 左侧珊瑚渐变强调条，纯 CSS 动效
+           ============================================================ */
+        .professional-card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 2.4rem 2.6rem;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(123, 108, 246, 0.1);
+            border-left: 6px solid transparent;          /* 左侧强调条（渐变描边） */
+            border-image: linear-gradient(to bottom, var(--coral), var(--violet)) 1;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        .professional-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+        .professional-card p { color: var(--ink); font-size: 1.08rem; line-height: 1.85; margin: 0; }
+        .professional-card strong { color: var(--coral); }   /* 关键词高亮（如 AI × Education） */
+
+        /* ============================================================
+           CAREER TIMELINE 职业时间线（纯 CSS 竖线 + 圆点）
+           ============================================================ */
+        .career-section { background: var(--mint-bg); }
+        .career-timeline { position: relative; padding: 1rem 0; }
+        .career-timeline::before {        /* 中轴渐变竖线 */
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 100%;
+            background: linear-gradient(to bottom, var(--coral), var(--violet), var(--teal));
+            border-radius: 2px;
+        }
+        .career-item {
+            display: flex; justify-content: flex-end; padding-right: 50%;
+            position: relative; margin-bottom: 2.4rem;
+        }
+        .career-item:nth-child(even) { justify-content: flex-start; padding-right: 0; padding-left: 50%; }
+        .career-card {
+            background: var(--surface); padding: 1.4rem 1.8rem; border-radius: 20px;
+            box-shadow: var(--shadow-soft); width: 88%; margin-right: 2rem;
+            border: 1px solid rgba(22, 184, 166, 0.12);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        .career-item:nth-child(even) .career-card { margin-right: 0; margin-left: 2rem; }
+        .career-card:hover { transform: scale(1.03); box-shadow: var(--shadow-lift); }
+        .career-dot {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 22px; height: 22px; border-radius: 50%; background: #fff;
+            border: 4px solid var(--coral); z-index: 2;
+            box-shadow: 0 0 0 6px rgba(255, 107, 74, 0.18);
+            animation: pulseDot 2.4s ease-in-out infinite;
+        }
+        .career-item:nth-child(2) .career-dot { border-color: var(--violet); box-shadow: 0 0 0 6px rgba(123,108,246,.18); }
+        .career-item:nth-child(3) .career-dot { border-color: var(--teal);   box-shadow: 0 0 0 6px rgba(22,184,166,.18); }
+        .career-item:nth-child(4) .career-dot { border-color: var(--gold);   box-shadow: 0 0 0 6px rgba(246,178,75,.18); }
+        .career-date {
+            display: inline-block; padding: 0.25rem 0.8rem;
+            background: rgba(255, 107, 74, 0.12); color: var(--coral);
+            border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .career-card h5 { font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+        .career-card p  { color: var(--ink-soft); font-size: 0.9rem; margin: 0; }
+
+        /* ============================================================
+           FOOTER 页脚 —— 直接复用 index.html
+           ============================================================ */
+        .footer-section {
+            background: var(--ink); color: #fff;
+            padding: 60px 0 30px; position: relative; overflow: hidden;
+        }
+        .footer-section::before {                 /* 顶部流动渐变条 */
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--coral), var(--violet), var(--teal), var(--gold));
+            background-size: 300% 300%; animation: gradientShift 5s ease infinite;
+        }
+        .footer-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-text { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .footer-contacts { display: flex; flex-direction: column; gap: 0.9rem; align-items: flex-end; }
+        .footer-contact-item {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            color: rgba(255,255,255,0.82); text-decoration: none; font-size: 0.98rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .footer-contact-item i { color: var(--coral); font-size: 1.15rem; width: 20px; text-align: center; }
+        .footer-contact-item:hover { color: #fff; transform: translateX(4px); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1); margin-top: 2rem;
+            padding-top: 1.5rem; text-align: center;
+            color: rgba(255,255,255,0.5); font-size: 0.85rem;
+        }
+
+        /* ============================================================
+           REVEAL 滚动入场（纯 CSS，无 JS）
+           不支持滚动时间线时，退化为「加载即播放」动画，保证内容可见。
+           ============================================================ */
+        .reveal { opacity: 0; transform: translateY(28px); }
+        @supports not (animation-timeline: view()) {
+            .reveal { animation: fadeInUp 0.9s ease forwards; }
+        }
+        @supports (animation-timeline: view()) {
+            .reveal {
+                animation: fadeInUp 0.9s ease forwards;
+                animation-timeline: view();
+                animation-range: entry 0% cover 22%;
+            }
+        }
+
+        /* ============================================================
+           KEYFRAMES 关键帧（全部纯 CSS，无 JavaScript）
+           ============================================================ */
+        @keyframes gradientShift {                 /* 背景/页脚渐变流动 */
+            0%   { background-position: 0 0, 0% 50%; }
+            50%  { background-position: 0 0, 100% 50%; }
+            100% { background-position: 0 0, 0% 50%; }
+        }
+        @keyframes floatShape {                     /* 装饰圆漂浮 */
+            0%, 100% { transform: translateY(0) scale(1); }
+            50%      { transform: translateY(-30px) scale(1.05); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes rotateRing { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+        @keyframes bounceDot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes pulseIcon { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        @keyframes wiggleIcon { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
+        @keyframes pulseDot {
+            0%,100% { box-shadow: 0 0 0 6px rgba(255,107,74,0.18); }
+            50%     { box-shadow: 0 0 0 12px rgba(255,107,74,0.04); }
+        }
+
+        /* ============================================================
+           RESPONSIVE 响应式微调
+           ============================================================ */
+        @media (max-width: 991.98px) {
+            .about-title { font-size: 2.4rem; }
+            .about-photo { width: 300px; height: 300px; }
+            .about-photo-ring { width: 340px; height: 340px; }
+            /* 时间线改为左侧单列 */
+            .career-timeline::before { left: 28px; }
+            .career-item, .career-item:nth-child(even) { justify-content: flex-start; padding-left: 64px; padding-right: 0; }
+            .career-card, .career-item:nth-child(even) .career-card { width: 100%; margin-left: 0; margin-right: 0; }
+            .career-dot, .career-item:nth-child(even) .career-dot { left: 28px; }
+        }
+        @media (max-width: 767.98px) {
+            .about-title { font-size: 2rem; }
+            .about-photo { width: 260px; height: 260px; }
+            .about-photo-ring { width: 300px; height: 300px; }
+            .section-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         NAVBAR 顶部导航栏（复用 index.html：仅调整链接指向与本页 active）
+         ============================================================ -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- 品牌 Logo，带跳动圆点 -->
+            <a class="navbar-brand" href="index.html">Mingxia Qin<span class="brand-dot">.</span></a>
+            <!-- 移动端折叠按钮 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 导航链接：Home/Modules/Journey 指回 index 或 modules 页，About 为本页高亮 -->
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="modules.html">Modules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#journey">Journey</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         ABOUT HERO 个人介绍首屏
+         Bootstrap：container / row / col-lg-6 / order-* 控制左右排布
+         ============================================================ -->
+    <section class="about-hero">
+        <!-- 浮动装饰圆（纯 CSS 动画） -->
+        <div class="float-shape fs-1"></div>
+        <div class="float-shape fs-2"></div>
+        <div class="float-shape fs-3"></div>
+
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <!-- 左：文字介绍（个人简介来自 personal introduction.txt） -->
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <div class="about-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>M.Sc. Artificial Intelligence @ University of Essex</span>
+                    </div>
+                    <h1 class="about-title">About <span class="hl">Mingxia Qin</span></h1>
+                    <p class="about-sub">
+                        AI-powered educator, bilingual teacher, and lifelong learner — bridging over a decade
+                        of international classroom experience with the frontiers of artificial intelligence.
+                    </p>
+                    <a href="#personal" class="about-cta">
+                        Get to know me <i class="fas fa-arrow-down"></i>
+                    </a>
+                </div>
+                <!-- 右：个人形象照（图片库素材 personal image (5).png，URL 编码空格与括号） -->
+                <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="about-photo-wrap">
+                        <div class="about-photo-ring"></div>
+                        <img src="images/personal%20image%20(5).png" alt="Mingxia Qin" class="about-photo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         PERSONAL 个人故事（Beyond the Classroom）
+         内容来自 personal introduction.txt；仅保留标题 + 介绍文字（6 张兴趣卡已移除）
+         ============================================================ -->
+    <section id="personal" class="section-pad">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center reveal">
+                    <span class="section-tag">Beyond the Classroom</span>
+                    <h2 class="section-title">Who I Am</h2>
+                    <p class="section-lead mx-auto">
+                        I am fascinated by historical stories, especially Romance of the Three Kingdoms.
+                        I am an avid learner who constantly broadens my understanding of the world by picking
+                        up new knowledge — I taught myself Canva design skills and am currently learning French
+                        in my free time. I enjoy hiking and global travelling, raising a bird and a cat at home,
+                        and exploring diverse cultures deeply. These experiences give me unique insights that I
+                        cherish and bring into my professional work.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         CAREER 职业旅程（My Teaching Career）
+         内容来自 professional introduction.txt；左侧 Professional 总结 + 配图，右侧时间线
+         ============================================================ -->
+    <section id="career" class="career-section section-pad">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center reveal">
+                    <span class="section-tag">My Teaching Career</span>
+                    <h2 class="section-title">A Decade in International Education</h2>
+                    <p class="section-lead mx-auto">
+                        Over a decade of international-school teaching across Thailand and Shanghai,
+                        spanning the UK National Curriculum and the IB Primary Years Programme (PYP).
+                    </p>
+                </div>
+            </div>
+
+            <div class="row align-items-center g-5">
+                <!-- 左：协作配图（上）+ Professional 专业总结卡（下），填满左侧空间、与时间线高度呼应 -->
+                <div class="col-lg-5 reveal">
+                    <img src="images/collaboration%20work.png" alt="Collaborative teaching work" class="img-fluid rounded-4 shadow mb-4" style="border-radius: 24px;">
+                    <!-- 专业总结卡：左侧渐变强调条 + 关键词高亮，珊瑚/紫配色与全站呼应 -->
+                    <div class="professional-card">
+                        <span class="section-tag">Professional</span>
+                        <p>
+                            11 years of international-school teaching across Cambridge / Singapore / IB PYP maths
+                            frameworks, with a PGCE (International) from the University of Nottingham
+                            (Primary / Chinese). I'm now formalising my AI training (Python / NumPy, building steadily)
+                            and positioning myself as an <strong>"AI &times; Education"</strong> hybrid: strong in instructional
+                            design, AI-assisted content evaluation, and bilingual EdTech collaboration. I'm actively looking
+                            for remote roles — AI teaching/training, educational content evaluation, AI-assisted curriculum
+                            design, and bilingual customer success all fit; pure AI engineering is welcome too.
+                        </p>
+                    </div>
+                </div>
+                <!-- 右：职业时间线（纯 CSS） -->
+                <div class="col-lg-7">
+                    <div class="career-timeline">
+                        <!-- 2013 泰国 -->
+                        <div class="career-item reveal">
+                            <div class="career-dot"></div>
+                            <div class="career-card">
+                                <span class="career-date">2013</span>
+                                <h5>Wattanasuksa School, Thailand</h5>
+                                <p>Primary Chinese instructor; organised cultural events for traditional Chinese festivals.</p>
+                            </div>
+                        </div>
+                        <!-- 2014–2016 上海虹桥 IB PYP -->
+                        <div class="career-item reveal">
+                            <div class="career-dot"></div>
+                            <div class="career-card">
+                                <span class="career-date">2014 – 2016</span>
+                                <h5>Shanghai Hongqiao International School (IB PYP)</h5>
+                                <p>Chinese Teacher &amp; Grade 1 Team Leader; co-taught math and inquiry-based units in English.</p>
+                            </div>
+                        </div>
+                        <!-- 2016–2024 上海协和 -->
+                        <div class="career-item reveal">
+                            <div class="career-dot"></div>
+                            <div class="career-card">
+                                <span class="career-date">2016 – 2024</span>
+                                <h5>Shanghai United International School</h5>
+                                <p>Chinese &amp; Homeroom Teacher; Chinese &amp; math lessons, English-medium co-teaching, and Chinese drama &amp; coding club CCAs.</p>
+                            </div>
+                        </div>
+                        <!-- 2025–2026 Avenues -->
+                        <div class="career-item reveal">
+                            <div class="career-dot"></div>
+                            <div class="career-card">
+                                <span class="career-date">2025 – 2026</span>
+                                <h5>Avenues World School</h5>
+                                <p>Mathematics Teacher; curriculum development and cross-grade interdisciplinary teaching.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER 页脚（复用 index.html：图标在左、虚拟信息在右）
+         ============================================================ -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h3 class="footer-title">Let's Connect</h3>
+                    <p class="footer-text">
+                        I'm currently open to remote opportunities in AI education, EdTech content development,
+                        and bilingual learning design. Let's build something meaningful together.
+                    </p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <div class="footer-contacts">
+                        <a href="mailto:your.name@example.com" class="footer-contact-item">
+                            <i class="fas fa-envelope"></i><span>your.name@example.com</span>
+                        </a>
+                        <a href="#" class="footer-contact-item">
+                            <i class="fab fa-linkedin-in"></i><span>linkedin.com/in/yourname</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mingxia Qin. E-Portfolio for University of Essex M.Sc. Artificial Intelligence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle（仅用于导航栏移动端折叠，动画均不依赖它） -->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
