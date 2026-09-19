@@ -1,16 +1,5 @@
 # Unit 4 · Software Engineering
 
-The Agile methodology focuses on iterative, flexible development, where software is built in small**increments called “sprints**.”Agile allows for continuous feedback, making it more adaptable to changing requirements. It is widely used in modern software development, especially in startups and tech companies. Example: Spotify and Facebook use Agile to deliver frequent updates and improve user experience.
-
- DevOps integrates software development (Dev) and IT operations (Ops) to enable continuous development, deployment, and monitoring. It relies on automation tools to speed up software releases while ensuring stability and security. Example: Netflix deploys updates thousands of times per day using DevOps.
-从灵活性和适应需求变化的能力的维度来看, 敏捷模式**Agile 的灵活性体现在"需求层"——它让"改什么"变得容易****, 他**可以通过创建待办列表，来根据新的需求随时进行更改。这些需求可以是由客户、开发人员或其他人提出来的，需求随时可改，每轮冲刺重排优先级。
-**DevOps 的灵活性体现在"交付层"——它让"改完怎么落地"变得又快又稳。**它把构建、测试、部署、监控等执行步骤交给自动化流水线，省去了**每次改动都要重复进行**的人工判断. 最终需要有人来查看测试与监控反馈，决定修复 / 回滚，进行审查，判断和批准，所以并不是无人化。因而需要人的及时响应来匹配他的速度。
-从适配的项目大小来说,敏捷模式更适合中小型项目, 总结的所有实践，包括站会、沟通、回顾，在小的项目里，机制高效而轻盈。但项目变大，各个实践步骤的复杂性呈平方级增长。敏捷反而变得很混乱。
-**DevOps 则"****任意规模适用****，且规模越大收益越高"，瓶颈在"工具投入"。** 它的核心是自动化：连续集成、自动测试、自动部署，把"人肉接力"变成"流水线自动跑"。但大型分布式系统（比如几千个微服务、每天数千次部署）**离开自动化根本跑不动****.****反过来，小团队用轻****量工具链****（GitHub Actions + Docker）也能低成本落地 DevOps，只是前期要花力气搭流水线和测试体系，对小项目而言这笔投入显得"略重"****。**
-**Agile 的风险管理哲学是"fail fast"（快速失败）——把风险拆小、前置。敏捷的三步曲是：快速失败（fail fast）→ 快速反馈（feedback fast）→ 快速纠正（correct fast）****.** **，所以失败不可怕，反而是一种低成本的学习机会。它的目的不是"失败"本身，而是用最小的代价尽早发现"做错了什么"。**
-**DevOps 的风险管理哲学是"fail safely"（安全地失败）——即使出错，用户也不受影响。 上线出问题，系统自动回滚（机器自己先恢复），人再来修真正的 bug 并重新发布。它管的是"生产环境出事怎么快速恢复"。****繁****提交小改动，而不是攒一个大版本。每次变更的风险面只有一小块，出了问题也容易定位****,** **让失败要么不发生、要么只影响极小部分用户；检测层通过实时监控错误率、延迟、可用性等指标并自动告警，让****异常第一时间被看见；恢复层通过自动回滚（指标异常时机器自动退回上****一健康****版本）和不可变基础设施（坏实例直接替换），做到****分钟级恢复****、无需等待人工操作；文化层通过无责备复盘（出事不追责个人、只改进系统）和混沌工程（主动注入故障演练），让团队敢于快速行动、系统越练越抗打。总之，fail safely 意味着失败并不可怕——预防缩小影响、检测看得见、恢复足够快、文化敢面对。**
-
-
 
 **Software Development Methodologies: Agile and DevOps**
 Agile and DevOps are two dominant methodologies in modern software development. This article analyzes the strengths and limitations of these two methodologies and then discusses which is most suitable for specific project scenarios.
