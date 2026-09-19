@@ -17,6 +17,7 @@ E-portfolio/
 ├─ index.html
 ├─ modules.html
 ├─ about.html
+├─ module1/             # Module 1 各 Unit 课程作业总结（unit1.md ~ unit12.md，从 modules.html 单元卡可跳转）
 ├─ images/              # 所有素材图（已统一英文命名）
 ├─ vendor/              # 本地化依赖（必须随站一起上传）
 │  ├─ bootstrap/        # Bootstrap 5.3.3 CSS + JS
@@ -26,7 +27,7 @@ E-portfolio/
 └─ README.md
 ```
 
-> ⚠️ `vendor/` 与 `images/` 是网站运行必需的，上传时不要漏掉。
+> ⚠️ `vendor/`、`images/` 与 `module1/` 是网站运行/浏览必需的，上传时不要漏掉。
 
 ## 本地运行（两种方式任选）
 
