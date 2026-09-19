@@ -194,17 +194,17 @@
         }
         .task-link:hover { background: var(--coral); color: #fff; }
 
-        /* Module 1 头部栏（head bar）：比主珊瑚橙深一档的实色 banner，更高 */
+        /* Module 1 头部栏（head bar）：浅珊瑚底，更高 */
         .module-headbar {
-            background: #d9693c;          /* 深色一点点：比 --coral(#ff9f68) 深一档 */
-            color: #fff;
+            background: #fde3d6;          /* 浅珊瑚底，比 --coral(#ff9f68) 浅，作为 head bar */
+            color: var(--ink);
         }
         .module-headbar .module-headbar-badge {
-            background: rgba(255, 255, 255, 0.22) !important;
+            background: var(--coral) !important;
             color: #fff;
         }
-        .module-headbar h5 { color: #fff; }
-        .module-headbar .module-headbar-text { color: rgba(255, 255, 255, 0.92) !important; }
+        .module-headbar h5 { color: var(--ink); }
+        .module-headbar .module-headbar-text { color: var(--soft-gray) !important; }
 </style>
 </head>
 <body>
@@ -304,12 +304,12 @@
 
                 <!-- ========== 模块 1 ========== -->
                 <section id="module1" class="module-block mb-5 reveal">
-                    <!-- 模块卡片（图 + 标题 + 简介）：head bar 风格，深色 banner + 更高 -->
+                    <!-- 模块卡片（图 + 标题 + 简介）：head bar 风格，浅珊瑚底 + 更高 -->
                     <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3 module-headbar">
-                        <div class="row g-0 align-items-center">
-                            <!-- 左：模块配图。改用图片库中居中构图的 AI/芯片主题图（images/icons (3).png），90px 小图裁剪后主体仍清晰 -->
-                            <div class="col-md-4">
-                                <img src="images/icons%20(3).png" alt="Launch into Computing" class="img-fluid w-100" style="object-fit: cover; min-height: 90px; max-height: 90px;">
+                        <div class="row g-0 align-items-stretch">
+                            <!-- 左：模块配图，铺满整条 bar 高度，避免被裁成小条 -->
+                            <div class="col-md-4 d-flex">
+                                <img src="images/icons%20(3).png" alt="Launch into Computing" class="img-fluid w-100" style="object-fit: cover; height: 100%;">
                             </div>
                             <!-- 右：模块标题与简介，内边距加高、字号略小 -->
                             <div class="col-md-8">
