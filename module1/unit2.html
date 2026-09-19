@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2 · Logical Foundations of Computing: Boolean Algebra, Gates, and Set Theory | Mingxia Qin</title>
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../vendor/font-awesome/css/all.min.css">
+    <link href="../vendor/fonts/google-fonts.css" rel="stylesheet">
+    <style>
+        :root {
+            --coral: #ff9f68; --lavender: #9b8bf4; --sunshine: #ffd166;
+            --mint: #06d6a0; --blossom: #ff9fb7; --cream: #fff9f5;
+            --ink: #2d3436; --soft-gray: #636e72;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins','Quicksand',sans-serif; background: var(--cream); color: var(--ink); line-height: 1.7; }
+        .navbar { background: rgba(224,118,56,0.72) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 18px rgba(224,118,56,0.25); padding: 0.5rem 0; }
+        .navbar-brand { font-weight: 700; font-size: 1.5rem; color: #fff !important; letter-spacing: -0.5px; }
+        .nav-link { font-weight: 500; color: rgba(255,255,255,0.82) !important; margin: 0 0.5rem; }
+        .nav-link:hover, .nav-link.active { color: #fff !important; }
+        .navbar-toggler { border-color: rgba(255,255,255,0.4) !important; }
+        .navbar-toggler-icon { filter: invert(1); }
+        .unit-hero { background: linear-gradient(135deg,#fff9f5 0%,#fff0e8 50%,#f5eeff 100%); padding: 60px 0 40px; border-bottom: 1px solid rgba(155,139,244,0.15); }
+        .unit-hero .badge-mod { background: var(--lavender); color: #fff; font-weight: 600; padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.85rem; }
+        .unit-hero h1 { font-size: 2rem; font-weight: 700; margin: 0.8rem 0 0.3rem; }
+        .unit-hero p.lead { color: var(--soft-gray); }
+        .unit-body { max-width: 860px; margin: 0 auto; padding: 40px 0 30px; }
+        .unit-body h2 { font-size: 1.35rem; font-weight: 700; margin: 2rem 0 0.8rem; color: var(--ink); border-left: 4px solid var(--coral); padding-left: 0.7rem; }
+        .unit-body h3 { font-size: 1.1rem; font-weight: 700; margin: 1.4rem 0 0.6rem; color: var(--lavender); }
+        .unit-body p { margin: 0.6rem 0; }
+        .unit-body ul { margin: 0.6rem 0 0.6rem 1.2rem; }
+        .unit-body li { margin: 0.3rem 0; }
+        .unit-body blockquote { background: #fff; border-left: 4px solid var(--sunshine); padding: 1rem 1.2rem; border-radius: 10px; color: var(--soft-gray); margin: 1rem 0; font-style: italic; box-shadow: 0 4px 18px rgba(45,52,54,0.05); }
+        .unit-body code { background: #f3eefc; color: #7a5fd6; padding: 0.1rem 0.4rem; border-radius: 6px; font-family: 'Consolas',monospace; font-size: 0.92em; }
+        .unit-body pre { background: #2d3436; color: #f6f6f6; padding: 1.1rem 1.3rem; border-radius: 12px; overflow-x: auto; margin: 1rem 0; }
+        .unit-body pre code { background: none; color: inherit; padding: 0; }
+        .unit-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 18px rgba(45,52,54,0.05); }
+        .unit-body th, .unit-body td { border: 1px solid #eee; padding: 0.6rem 0.8rem; text-align: left; font-size: 0.95rem; }
+        .unit-body th { background: var(--lavender); color: #fff; font-weight: 600; }
+        .unit-body td code { background: #f3eefc; }
+        .back-link { display: inline-block; margin: 0 0 1.5rem; color: var(--coral); text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .footer-section { background: var(--ink); color: white; padding: 60px 0 30px; position: relative; overflow: hidden; }
+        .footer-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg,var(--coral),var(--lavender),var(--sunshine),var(--mint)); background-size: 300% 300%; animation: gradientShift 5s ease infinite; }
+        @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .footer-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-text { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .footer-contacts { display: flex; flex-direction: column; gap: 0.9rem; align-items: flex-end; }
+        .footer-contact-item { display: inline-flex; align-items: center; gap: 0.6rem; color: rgba(255,255,255,0.82); text-decoration: none; font-size: 0.98rem; }
+        .footer-contact-item i { color: var(--coral); font-size: 1.15rem; width: 20px; text-align: center; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 2rem; padding-top: 1.5rem; text-align: center; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Mingxia Qin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="../modules.html">Modules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html#journey">Journey</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="unit-hero">
+        <div class="container">
+            <span class="badge-mod">Module 1 · Unit 2</span>
+            <h1>Logical Foundations of Computing: Boolean Algebra, Gates, and Set Theory</h1>
+            <p class="lead">University of Essex — M.Sc. Artificial Intelligence</p>
+        </div>
+    </header>
+    <main class="container">
+        <div class="unit-body">
+            <a class="back-link" href="../modules.html">&larr; Back to Modules Guide</a>
+<h1>Unit 2 · Logical Foundations of Computing: Boolean Algebra, Gates, and Set Theory</h1>
+<blockquote>How Boolean logic powers search engines and access control — and where binary thinking falls short.</blockquote>
+<h2>Boolean logic in search engines</h2>
+<p>Boolean logic lets a search engine process complex multi-condition queries in a single step. With operators AND / OR / NOT, a query such as "dog AND collar AND black" returns only the pages that satisfy every condition, instead of filtering one condition at a time. Constrained Boolean query expressions pre-filter eligible resources, cutting unnecessary inspection and lowering resource consumption (Wang et al., 2026).</p>
+<h2>Boolean logic in enterprise access control</h2>
+<p>The same binary framework assigns permissions automatically. For example, only users who satisfy "belong to the finance department AND have a staff level above 3" may open confidential financial documents. This automatic judgement protects sensitive data, avoids unauthorised internal access, and reduces the risk of leaks.</p>
+<h2>Limitations of binary logic</h2>
+<p>Boolean logic is built on an absolute true/false split, so it struggles with vague or graded concepts. A price of £80 is "affordable" for one shopper but "expensive" for another; pure Boolean logic forces such fuzzy ideas into two rigid categories, which often mismatches real user needs and lowers search accuracy (Salton, Fox and Wu, 1983). It also cannot represent uncertainty or probability — "it will rain tomorrow" is not a clean true/false, and an AI image classifier outputs a 0.93 confidence rather than a hard yes/no.</p>
+<h2>Logic-circuit design: a 3-input alarm (majority voting)</h2>
+<p>The alarm has three inputs (A, B, C) and one output (O). The output triggers when <strong>two or more</strong> inputs are 1.</p>
+<table class="table">
+<tr><th>A</th><th>B</th><th>C</th><th>O</th></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</table>
+<p>The truth table yields four product terms for O = 1: O = BC + AC + AB + ABC. Applying the idempotent law (A + A = A) and complement law (X + X' = 1), this simplifies to <strong>O = AB + BC + AC</strong>. In the circuit we therefore need only three two-input AND gates (for AB, BC, AC) feeding a single three-input OR gate. Whenever at least two inputs are 1, the OR gate outputs 1 and the alarm triggers — e.g. when both the IP address and the password are wrong, the system immediately alerts the user.</p>
+<h2>Reference</h2>
+<ul>
+<li>Salton, G., Fox, E.A. & Wu, H. (1983) 'Extended Boolean Information Retrieval', <em>Communications of the ACM</em>, 26(11), pp. 1022–1036. DOI: 10.1145/182.358466</li>
+<li>Tanenbaum, A.S. et al. (2013) <em>Structured Computer Organization</em>. 6th edn. Boston: Pearson.</li>
+<li>Wang, S. et al. (2026) <em>Search, Inspect, Fetch: Exploiting Boolean Retrieval for DeepResearch Agents</em>. arXiv:2608.02751. Available at: <a href="https://arxiv.org/pdf/2608.02751" target="_blank" rel="noopener">https://arxiv.org/pdf/2608.02751</a> (Accessed: 11 August 2026)</li>
+</ul>
+        </div>
+    </main>
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h3 class="footer-title">Let's Connect</h3>
+                    <p class="footer-text">
+                        I'm currently open to remote opportunities in AI education, EdTech content development,
+                        and bilingual learning design. Let's build something meaningful together.
+                    </p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <div class="footer-contacts">
+                        <a href="mailto:your.name@example.com" class="footer-contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>your.name@example.com</span>
+                        </a>
+                        <a href="#" class="footer-contact-item">
+                            <i class="fab fa-linkedin-in"></i>
+                            <span>linkedin.com/in/yourname</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mingxia Qin. E-Portfolio for University of Essex M.Sc. Artificial Intelligence.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,35 +1,20 @@
 # Unit 4 · Software Engineering
 
-> Two dominant methodologies — where each fits, and why they often work best together.
+> Agile and DevOps — two dominant methodologies, their strengths, limits, and the projects they fit best.
 
-## Task / Assignment
-Analyse the strengths, limitations and best-fit project scenarios of **Agile** and **DevOps**.
+## Agile
+Agile builds software in small increments called "sprints" and continuously gathers feedback from users and stakeholders. Its strength lies at the *requirements* layer: a backlog lets new requirements from customers, developers, or others be added at any time, with priorities re-ranked every sprint. Agile follows a "**fail fast**" philosophy — risks are broken into small pieces and moved forward, so the team discovers mistakes at the lowest cost.
 
-### Agile
-- Builds software in small increments ("sprints"); continuous feedback from users/stakeholders.
-- Strength sits at the **requirements layer** — a backlog lets new requirements land any time, priorities
-  re-ranked each sprint.
-- Philosophy: **"fail fast"** — break risk into small pieces, surface mistakes cheaply.
-- Limitation: shines for **small/medium** projects; practices get quadratically heavier as the project grows,
-  and it says little about *delivery*.
+Limitation: Agile suits small and medium projects because practices like stand-ups, communication, and retrospectives stay light only in small teams. As the project grows, that complexity rises quadratically and Agile can turn chaotic. It also says little about delivery.
 
-### DevOps
-- An automated pipeline of CI → automated testing → automated deployment; **"fail safely"**.
-- Strength sits at the **delivery layer** — frequent small commits, automatic rollback to last healthy
-  version, real-time monitoring.
-- Limitation: not fully automatic (humans still review/approve); upfront tooling investment feels heavy for
-  small projects.
+## DevOps
+DevOps connects development and operations through an automated pipeline of continuous integration, automated testing, and automated deployment. Its strength lies at the *delivery* layer: the pipeline replaces repetitive manual checking, so releases are fast and stable. DevOps follows a "**fail safely**" philosophy — small frequent commits, automatic rollback to the last healthy version, and real-time monitoring make anomalies visible immediately, so even when something breaks users are barely affected and recovery takes minutes.
 
-### Best-fit summary
-- **Agile** → startup with uncertain requirements (feedback > scale).
-- **DevOps** → large system with thousands of microservices / daily deploys (e.g. Netflix).
-- **Both together** → established companies (Spotify, Facebook): Agile plans, DevOps delivers.
-- Agile answers *what to build*; DevOps answers *how to deliver it*.
+Limitation: DevOps is not fully automatic. Humans must still review monitoring feedback, decide fix-vs-rollback, and give final approval, so its speed depends on timely human response. The upfront investment in tooling and test systems also feels heavy for small projects.
 
-## Associated source files
-| File | Type | Notes |
-|------|------|-------|
-| `Unit4 software development methodologies.docx` | Word | Full comparative essay with examples (Spotify, Facebook, Netflix) |
+## Which to choose?
+- A startup with uncertain requirements → **Agile** (fast feedback matters more than delivery scale).
+- A large system with thousands of microservices and daily deployments (e.g. Netflix) → **DevOps** (such a system cannot run without automation).
+- An established company such as Spotify or Facebook → **both together**: Agile manages changing requirements, DevOps lands each change quickly and safely.
 
-## Core idea
-Pick by **project scale** and **requirement volatility** — and combine the two whenever possible.
+In short, Agile answers "what to build"; DevOps answers "how to deliver it".

@@ -1,35 +1,22 @@
 # Unit 8 · Principles of Cyber Security
 
-> A phishing incident, its mitigations, and the ethics behind defending against it.
+> A phishing case study — threat analysis, mitigation, and the ethics of security.
 
-## Task / Assignment
-Analyse a hypothetical cyber-attack and build a mitigation + ethical response.
+## Scenario
+At a trading company, employees received a phishing email titled "Your 2026 Salary Increase: Confirm Payroll Before Friday". The sender showed "HR Department" but came from an external mailbox. It urged staff to click a link and verify bank and identity details within 48 hours, warning that failure would forfeit the raise.
 
-### Scenario
-A trading firm's staff receive a phishing email — sender shows "HR Department" but from a disguised external
-mailbox — titled *"Your 2026 Salary Increase — confirm payroll before Friday"*, demanding bank/identity details
-via a link (or else forfeit the raise). A virus in the link could open the internal network.
+## Threat analysis
+This is a typical phishing attack: the email lures employees into sharing sensitive information, and a virus in the link could give attackers access to the internal network, risking data leakage. It shows that firewalls and email filters alone cannot fully protect an organisation's cybersecurity.
 
-### Threat analysis
-Classic phishing: lures users into handing over sensitive data; firewalls + email filters alone are **not enough**.
+## Mitigation
+- **Training** — teach staff never to click suspicious links and to check the true sender address.
+- **Data protection** — separate sensitive databases from public ones and limit who can access them (least privilege).
+- **Multi-factor authentication** — a stolen password alone is no longer enough for a successful attack.
+- **Network segmentation** — firewalls should separate the customer database from general office traffic.
+- **Compliance** — follow lawful data-handling policies, notify the regulator of a serious breach within 72 hours, and adopt **ISO/IEC 27001** to meet an international benchmark.
 
-### Mitigation
-- **Training** so staff check the true sender and never click suspicious links.
-- **Data segregation** — separate sensitive DBs from public ones; least-privilege access.
-- **MFA** on every account (a stolen password alone is insufficient).
-- **Network segmentation** — keep the customer DB off general office traffic.
-- **Compliance** — GDPR 72-hour breach notification; adopt **ISO/IEC 27001** controls.
-
-### Ethical considerations
-- **User privacy** — transparency + user control over collected data.
-- **Duty of care** — protect employee payroll data with the same rigour as client data.
-- **Consent in drills** — fake-phishing simulations should include informed consent / a clear debrief.
-- **Just culture** — review the *process*, not blame the individual who clicked.
-
-## Associated source files
-| File | Type | Notes |
-|------|------|-------|
-| `Unit8 Cybersecurity Threat Assessment and Mitigation Plan.docx` | Word | Full case analysis, mitigation plan and ethics discussion |
-
-## Core idea
-Defence is technical **and** human — and must stay fair to the people it protects.
+## Ethical considerations
+- **User privacy** — companies must be transparent about data collection and give users control over their information.
+- **Duty of care** — employee bank and identity data deserve the same rigour as client records; a breach harms workers directly.
+- **Just culture** — blame-free post-incident review fixes the process, not the person, building stronger security than punishment.
+- **Simulation ethics** — fake-phishing drills exploit trust and financial pressure, so informed consent or a clear debrief should accompany any test.

@@ -1,26 +1,21 @@
 # Unit 7 · Principles of Artificial Intelligence (AI) II
 
-> A security risk assessment of an Electronic Health Record (EHR) system.
+> Security risk assessment of an Electronic Health Record (EHR) system.
 
-## Task / Assignment
-Complete a **Security Risk Assessment Report** for a chosen system, following the standard structure:
-executive summary → system overview → identified threats & vulnerabilities → recommendations → conclusion.
+## Executive summary
+An electronic health record (EHR) system stores patients' medical information in digital form. It saves repetitive health-checking work and, with comprehensive information, raises diagnosis accuracy. However, it also carries key threats: data breaches, unauthorised access, and misuse. This report discusses the system's structure, its key threats, and practical steps to reduce those risks.
 
-### Applied to an EHR system
-- **What it is**: digitised patient medical records shared across hospital departments, insurers and even
-  other hospitals — so a patient's record travels well beyond one clinic (wider sharing = larger attack surface).
-- **Threats & vulnerabilities**
-  1. **Excessive access** — many third-party interfaces (insurance, labs, external hospitals) add entry points.
-  2. **Insider threats** — over-privileged staff may leak/sell records.
-  3. **Data breaches** — e.g. Ireland's HSE attack (2021) exposed millions of patients and disrupted services for weeks.
-  4. **Phishing** — staff tricked into revealing credentials.
-- **Recommendations**: enforce **MFA** on every login; regular phishing-awareness training; **least-privilege**
-  role definitions; encrypt data at rest **and** in transit; continuous maintenance.
+## System overview
+The EHR records a patient's health data at every hospital visit. Medical workers enter examination results and diagnoses into it; the data is shared across hospital departments and even between city hospitals, and insurance institutes use it to verify reimbursement claims. A patient's record therefore travels far beyond one clinic — and the wider the sharing, the larger the attack surface.
 
-## Associated source files
-| File | Type | Notes |
-|------|------|-------|
-| `Unit7 Security Risk Assessment Report.docx` | Word | Full 5-section report on the EHR scenario |
+## Identified threats & vulnerabilities
+- **Excessive access.** The EHR connects to many third-party interfaces (insurers, labs, external institutions); each adds a new entry point for attackers.
+- **Insider threats.** Staff with too much access may leak or sell patient details (e.g. to pharmaceutical companies).
+- **Data breaches.** In 2021, Ireland's Health Service Executive (HSE) was hacked; millions of patient records were exposed and hospital services disrupted for weeks.
+- **Phishing.** Staff may reveal credentials through deceptive emails, giving attackers a legitimate-looking doorway in.
 
-## Core idea
-Treat security as a **continuous task** — technology + training + clear policy together give the strongest defence.
+## Recommendations
+Enforce **multi-factor authentication (MFA)** on every login; train staff to recognise phishing and understand their legal duties; apply the **principle of least privilege** with precise user roles; encrypt data at rest and in transit; and keep systems patched. Technology, training, and clear policy together give the strongest protection.
+
+## Conclusion
+The EHR improves efficiency and accuracy but brings real security risk. The main dangers are excessive access, insider misuse, data breaches, and phishing — so hospitals must treat security as a continuous task, with strong authentication, clear access rules, and staff training.

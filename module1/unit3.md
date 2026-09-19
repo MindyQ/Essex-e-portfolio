@@ -1,14 +1,16 @@
 # Unit 3 · Principles of Computer Science
 
-> Algorithmic thinking — comparing two classic sorting strategies in Python.
+> Comparing two classic sorting algorithms — bubble sort and quicksort — in complexity, behaviour, and real-world use.
 
-## Task / Assignment
-Implement and compare **bubble sort** (loop-based) vs **quicksort** (recursive, divide-and-conquer),
-measure their time complexity, and discuss real-world use.
+## The two algorithms
+Bubble sort is a loop-based, iterative algorithm. It repeatedly walks the list, compares two adjacent items, and swaps them if they are in the wrong order. Two nested `for` loops complete the process, giving a time complexity of **O(n²)**.
 
-Key findings:
+Quicksort, by contrast, is a recursive divide-and-conquer algorithm. It splits the list into a left part and a right part, then recursively repeats this split-and-sort on each sub-list. Its time complexity is **O(n log n)**.
 
-| Dataset size | Bubble sort (comparisons) | Quicksort (comparisons) | Speed gap |
+## Performance on growing datasets
+Both run quickly on small datasets, but the speed gap widens sharply as data grows:
+
+| Items in dataset | Bubble sort (comparisons) | Quicksort (comparisons) | Speed gap |
 |---|---|---|---|
 | 7 | 21 | 13 | 1.6× |
 | 100 | 5,000 | 670 | 7.5× |
@@ -16,15 +18,7 @@ Key findings:
 | 10,000 | 50,000,000 | 133,000 | 376× |
 | 100,000 | 5,000,000,000 | 1,660,000 | ~3,000× |
 
-- **Bubble sort** — `O(n²)`, two nested loops, simple to write, fine for tiny tasks / learning, rarely used
-  in production at scale.
-- **Quicksort** — `O(n log n)` average, recursive split; far faster on big data (inventory / DB result
-  sorting), but a careless pivot can hit its `O(n²)` worst case.
+## Practical implications
+Bubble sort has simple logic and easy code, but becomes very inefficient for large datasets, so it is rarely used in production software — it is mostly limited to small tasks and beginner learning.
 
-## Associated source files
-| File | Type | Notes |
-|------|------|-------|
-| `Unit3 algorithm analysis.docx` | Word | Full comparison write-up + performance table |
-
-## Takeaway
-Choose the algorithm to fit the data size; divide-and-conquer wins decisively as datasets grow.
+Quicksort runs much faster on large data thanks to divide-and-conquer, and is widely used to sort huge datasets such as inventories and database results. Its worst case (O(n²)) can be triggered more easily than bubble sort's, but engineers avoid it with careful pivot selection, making quicksort a reliable high-performance choice for real-world big-data tasks.
